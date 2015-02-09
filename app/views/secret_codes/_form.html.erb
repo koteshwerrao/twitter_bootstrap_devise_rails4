@@ -1,0 +1,48 @@
+<%= form_for(@secret_code, :html => { :class => "form-horizontal secret_code" } )do |f| %>
+
+    <% if @secret_code.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@secret_code.errors.count, "error") %> prohibited this secret_code from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @secret_code.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+  <div class="control-group">
+  
+    <div class="controls">
+      <%if params[:id].present?%>
+      
+    <%unless @secret_code.user.nil?%>   
+    <%= f.label :user_id, :class => 'control-label' %>
+    <div class="controls">
+    <%= f.text_field :user_id, :class => 'form-control',:readonly => true%>(<b>Email:</b><%=@secret_code.user.email%>)
+   
+    </div>
+     <%end%>
+      <%else%>
+      <span class="control-label">Select No of Secure Codes</span><br>
+      <%=select_tag "secret_code_no", options_for_select([["10","10"],["1", "1"],["20", "20"],["50", "50"],["100", "100"]])%>
+      <%end%>
+    </div>
+    <%= error_span(@secret_code[:user_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :secretcode, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :secretcode, :class => 'form-control',:readonly => true%>
+    </div>
+    <%= error_span(@secret_code[:secretcode]) %>
+  </div>
+<br/>
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")), secret_codes_path(@secret_code), :class => 'btn btn-default' %>
+
+<% end %>
